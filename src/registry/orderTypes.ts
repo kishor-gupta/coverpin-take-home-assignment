@@ -1,4 +1,5 @@
 import { certificateOfGoodStanding } from '../order-types/certificate-of-good-standing'
+import { certificateOfIncumbency } from '../order-types/certificate-of-incumbency'
 import { genericOrder } from '../order-types/generic-order'
 import type { OrderTypeDefinition } from './types'
 
@@ -13,6 +14,7 @@ export function registerOrderType(definition: OrderTypeDefinition): void {
 
 registerOrderType(genericOrder)
 registerOrderType(certificateOfGoodStanding)
+registerOrderType(certificateOfIncumbency)
 
 export function getOrderType(key: string): OrderTypeDefinition {
   const definition = orderTypes.get(key)
