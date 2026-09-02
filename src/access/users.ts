@@ -1,8 +1,8 @@
 import { USER_IDS, type User, type UserId } from '../types/order'
 
 export const USERS: User[] = [
-  { id: 'alice', name: 'Alice Chen' },
-  { id: 'bob', name: 'Bob Okonkwo' },
+  { id: 'kg', name: 'Kishor' },
+  { id: 'sm', name: 'Sumit' },
 ]
 
 const USER_STORAGE_KEY = 'coverpin.currentUser'
@@ -22,7 +22,7 @@ export function getUser(id: UserId): User {
 export function readStoredUserId(): UserId {
   const stored = sessionStorage.getItem(USER_STORAGE_KEY)
   if (stored && isUserId(stored)) return stored
-  return 'alice'
+  return 'kg'
 }
 
 export function writeStoredUserId(id: UserId): void {
