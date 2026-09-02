@@ -13,13 +13,6 @@ import {
   submitOrder,
 } from './orders'
 
-const file = {
-  name: 'support.pdf',
-  size: 12,
-  type: 'application/pdf',
-  dataUrl: 'data:application/pdf;base64,aaa',
-}
-
 const fixtureType: OrderTypeDefinition = {
   key: 'ACCESS_TEST_ORDER',
   label: 'Access test order',
