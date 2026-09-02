@@ -6,10 +6,12 @@ import { DashboardPage } from './pages/DashboardPage'
 import { NewOrderPage } from './pages/NewOrderPage'
 import { WizardPage } from './pages/WizardPage'
 
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
+
 export default function App() {
   return (
     <UserProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<CatalogPage />} />
