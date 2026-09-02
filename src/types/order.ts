@@ -1,4 +1,4 @@
-export const USER_IDS = ['alice', 'bob'] as const
+export const USER_IDS = ['kg', 'sm'] as const
 export type UserId = (typeof USER_IDS)[number]
 
 export interface User {
