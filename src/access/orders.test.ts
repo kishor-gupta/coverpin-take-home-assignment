@@ -64,37 +64,37 @@ describe('access module', () => {
   })
 
   it('hides drafts from every user except the creator', () => {
-    const draft = createDraft('alice', fixtureType.key)
-    expect(listOrders('alice').map((order) => order.id)).toContain(draft.id)
-    expect(listOrders('bob')).toEqual([])
-    expect(getOrder('bob', draft.id)).toBeNull()
+    const draft = createDraft('kg', fixtureType.key)
+    expect(listOrders('kg').map((order) => order.id)).toContain(draft.id)
+    expect(listOrders('sm')).toEqual([])
+    expect(getOrder('sm', draft.id)).toBeNull()
   })
 
   it('rejects draft mutation and delete from non-creators', () => {
-    const draft = createDraft('alice', fixtureType.key)
-    expect(() => saveDraft('bob', draft.id, draft.values)).toThrow(AccessDeniedError)
-    expect(() => deleteDraft('bob', draft.id)).toThrow(AccessDeniedError)
-    expect(() => submitOrder('bob', draft.id)).toThrow(AccessDeniedError)
-    expect(getOrder('alice', draft.id)?.status).toBe('draft')
+    const draft = createDraft('kg', fixtureType.key)
+    expect(() => saveDraft('sm', draft.id, draft.values)).toThrow(AccessDeniedError)
+    expect(() => deleteDraft('sm', draft.id)).toThrow(AccessDeniedError)
+    expect(() => submitOrder('sm', draft.id)).toThrow(AccessDeniedError)
+    expect(getOrder('kg', draft.id)?.status).toBe('draft')
   })
 
   it('lets the creator delete a draft and nobody else afterwards', () => {
-    const draft = createDraft('alice', fixtureType.key)
-    deleteDraft('alice', draft.id)
-    expect(getOrder('alice', draft.id)).toBeNull()
-    expect(() => deleteDraft('alice', draft.id)).toThrow(NotFoundError)
+    const draft = createDraft('kg', fixtureType.key)
+    deleteDraft('kg', draft.id)
+    expect(getOrder('kg', draft.id)).toBeNull()
+    expect(() => deleteDraft('kg', draft.id)).toThrow(NotFoundError)
   })
 
   it('exposes submitted orders to all users without allowing edits', () => {
-    const draft = createDraft('alice', fixtureType.key)
-    saveDraft('alice', draft.id, completeValues())
-    const submitted = submitOrder('alice', draft.id)
+    const draft = createDraft('kg', fixtureType.key)
+    saveDraft('kg', draft.id, completeValues())
+    const submitted = submitOrder('kg', draft.id)
     expect(submitted.status).toBe('submitted')
-    expect(listOrders('bob').map((order) => order.id)).toContain(draft.id)
-    expect(getOrder('bob', draft.id)?.status).toBe('submitted')
-    expect(() => saveDraft('bob', draft.id, completeValues())).toThrow(AccessDeniedError)
-    expect(() => deleteDraft('alice', draft.id)).toThrow(AccessDeniedError)
-    expect(() => deleteDraft('bob', draft.id)).toThrow(AccessDeniedError)
+    expect(listOrders('sm').map((order) => order.id)).toContain(draft.id)
+    expect(getOrder('sm', draft.id)?.status).toBe('submitted')
+    expect(() => saveDraft('sm', draft.id, completeValues())).toThrow(AccessDeniedError)
+    expect(() => deleteDraft('kg', draft.id)).toThrow(AccessDeniedError)
+    expect(() => deleteDraft('sm', draft.id)).toThrow(AccessDeniedError)
   })
 })
 
@@ -104,21 +104,21 @@ describe('save vs submit validation', () => {
   })
 
   it('persists invalid drafts and refuses incomplete submit', () => {
-    const draft = createDraft('alice', fixtureType.key)
-    const saved = saveDraft('alice', draft.id, {
+    const draft = createDraft('kg', fixtureType.key)
+    const saved = saveDraft('kg', draft.id, {
       S1: { title: '' },
       REVIEW_AND_PLACE: { name: '', notes: '' },
     })
     expect(saved.status).toBe('draft')
     expect((saved.values.S1 as { title: string }).title).toBe('')
-    expect(() => submitOrder('alice', draft.id)).toThrow(ValidationError)
-    expect(getOrder('alice', draft.id)?.status).toBe('draft')
+    expect(() => submitOrder('kg', draft.id)).toThrow(ValidationError)
+    expect(getOrder('kg', draft.id)?.status).toBe('draft')
   })
 
   it('places an order only after the full type schema passes', () => {
-    const draft = createDraft('alice', fixtureType.key)
-    saveDraft('alice', draft.id, completeValues())
-    const submitted = submitOrder('alice', draft.id)
+    const draft = createDraft('kg', fixtureType.key)
+    saveDraft('kg', draft.id, completeValues())
+    const submitted = submitOrder('kg', draft.id)
     expect(submitted.status).toBe('submitted')
     expect(submitted.submission?.title).toBe('Desk move')
   })
